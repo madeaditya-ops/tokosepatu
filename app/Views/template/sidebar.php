@@ -35,7 +35,7 @@
   <li class="nav-item">
     <a class="nav-link collapsed" href="<?= base_url('member/data'); ?>">
       <i class="bi bi-people"></i>
-      <span>Customers</span>
+      <span>Member</span>
     </a>
    </li>
   <li class="nav-item">

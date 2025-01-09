@@ -32,23 +32,24 @@
         <div class="col-sm-3">
           <select class="form-select" aria-label="Default select example" name="id_kategori" >
               <?php foreach ($kategori as $k): ?>
-                  <option value="<?= $k['id_kategori']; ?>" <?= old('id_kategori') == $k['id_kategori'] ? 'selected' : ''; ?>>
-                      <?= $k['nama_kategori']; ?>
-                  </option>
+                 <option value="<?= $k['id_kategori']; ?>" 
+                    <?= (old('id_kategori') ?? $produk['id_kategori']) == $k['id_kategori'] ? 'selected' : ''; ?>>
+                    <?= esc($k['nama_kategori']); ?>
+                </option>
               <?php endforeach; ?>
           </select>
         </div>
       </div>
 
       <div class="row mb-3">
-         <label class="col-sm-2 col-form-label">Size</label>
+        <label class="col-sm-2 col-form-label">Size</label>
           <div class="col-sm-3">
               <select class="form-select" aria-label="Default select example" name="size" >
-                  <option value="38" <?= old('size') == 38 ? 'selected' : ''; ?>>38</option>
-                  <option value="39" <?= old('size') == 39 ? 'selected' : ''; ?>>39</option>
-                  <option value="40" <?= old('size') == 40 ? 'selected' : ''; ?>>40</option>
-                  <option value="41" <?= old('size') == 41 ? 'selected' : ''; ?>>41</option>
-                  <option value="42" <?= old('size') == 42 ? 'selected' : ''; ?>>42</option>
+                <option value="38" <?= (old('size') ?? $produk['size']) == 38 ? 'selected' : ''; ?>>38</option>
+                <option value="39" <?= (old('size') ?? $produk['size']) == 39 ? 'selected' : ''; ?>>39</option>
+                <option value="40" <?= (old('size') ?? $produk['size']) == 40 ? 'selected' : ''; ?>>40</option>
+                <option value="41" <?= (old('size') ?? $produk['size']) == 41 ? 'selected' : ''; ?>>41</option>
+                <option value="42" <?= (old('size') ?? $produk['size']) == 42 ? 'selected' : ''; ?>>42</option>
               </select>
           </div>
       </div>

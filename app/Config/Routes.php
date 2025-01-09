@@ -52,9 +52,11 @@ $routes->post('transaksi/pembayaran', 'Transaksi::pembayaran',['filter' => 'admi
 $routes->post('transaksi/simpanPembayaran', 'Transaksi::simpanPembayaran',['filter' => 'adminFilter']);
 $routes->get('transaksi/viewDataMember', 'Transaksi::viewDataMember',['filter' => 'adminFilter']);
 $routes->post('transaksi/listDataMember', 'Transaksi::listDataMember',['filter' => 'adminFilter']);
+$routes->post('transaksi/cetakstruk', 'Transaksi::cetakstruk',['filter' => 'adminFilter']);
 
 $routes->get('transaksi/riwayat', 'Transaksi::riwayatTransaksi',['filter' => 'adminFilter']);
 $routes->get('transaksi/hpsRiwayat/(:any)', 'Transaksi::hapusRiwayat/$1',['filter' => 'adminFilter']);
+$routes->get('cetakpdf', 'PdfController::cetak',['filter' => 'adminFilter']);
 
 
 // member

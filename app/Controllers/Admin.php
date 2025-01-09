@@ -3,6 +3,7 @@
 namespace App\Controllers;
 use App\Models\ProdukModel;
 use App\Models\TransaksiModel;
+use App\Models\LoginModel;
 
 
 class Admin extends BaseController
@@ -10,22 +11,13 @@ class Admin extends BaseController
     public function index()
     {
         $transaksiModel = new TransaksiModel();
+        $userModel = new LoginModel();
 
         // Menghitung jumlah transaksi berdasarkan hari ini
         $jumlahHari = $transaksiModel
             ->where('DATE(tanggal)', date('Y-m-d')) // Transaksi hari ini
             ->countAllResults();
 
-        // Menghitung jumlah transaksi berdasarkan minggu ini
-        $jumlahBulan = $transaksiModel
-            ->where('MONTH(tanggal)', date('m')) // Transaksi bulan ini
-            ->where('YEAR(tanggal)', date('Y')) // Tahun ini untuk keakuratan
-            ->countAllResults();
-
-        // Menghitung jumlah transaksi berdasarkan bulan ini
-        $jumlahTahun = $transaksiModel
-            ->where('YEAR(tanggal)', date('Y')) // Tahun ini untuk keakuratan
-            ->countAllResults();
 
         $transaksiHariIni = $transaksiModel
             ->select("SUM(total_bersih) as totalTransaksi")
@@ -35,21 +27,12 @@ class Admin extends BaseController
         // Jika transaksi ditemukan, tampilkan total transaksi hari ini
         $totalTransaksiHariIni = $transaksiHariIni->totalTransaksi ?? 0;
 
-        // Total transaksi per bulan
-        $transaksiPerBulan = $transaksiModel
-            ->select("SUM(total_bersih) as totalTransaksi")
-            ->where("MONTH(tanggal)", date('m')) 
-            ->get()
-            ->getRow();
-        $totalTransaksiBulanIni = $transaksiPerBulan->totalTransaksi ?? 0;
 
-        // Total transaksi per tahun
-        $transaksiPerTahun = $transaksiModel
-            ->select("SUM(total_bersih) as totalTransaksi")
-            ->where("YEAR(tanggal)", date('Y')) 
+        $totalUser = $userModel
+            ->select("COUNT(*) AS totalUser")
             ->get()
             ->getRow();
-        $totalTransaksiTahunIni = $transaksiPerTahun->totalTransaksi ?? 0;
+
 
         // Mendapatkan data chart
         $dataChart = $this->getChartData();
@@ -65,6 +48,7 @@ class Admin extends BaseController
             'piechart' => $pieChart,
             'topProduk' => $topProduk,
             'stokAlert' => $stokAlert,
+            'totalUser' => $totalUser->totalUser,
         ];
         return view('admin/dashboard', $data);
     }

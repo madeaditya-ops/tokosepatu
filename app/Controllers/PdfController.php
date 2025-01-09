@@ -9,7 +9,11 @@ class PdfController extends BaseController
     {
         $tbLaporan = $this->db->table('detail_transaksi');
 
-        // Menjalankan query untuk semua riwayat transaksi
+        $bulan = $this->request->getVar('bulan'); // Tangkap input bulan dari request (GET atau POST)
+
+        $tbLaporan = $this->db->table('detail_transaksi');
+
+        // Menjalankan query untuk semua riwayat transaksi dengan filter bulan
         $queryLaporan = $tbLaporan->select('
             transaksi.no_faktur AS faktur,
             produk.nama_produk AS namaProduk,
@@ -19,30 +23,49 @@ class PdfController extends BaseController
             transaksi.tanggal AS tanggal,
             transaksi.diskon_persen AS diskon,
             transaksi.diskon_uang AS potongan,
-            member.nama_member AS namaMember,
-
+            member.nama_member AS namaMember
         ')
         ->join('produk', 'produk.barcode = detail_transaksi.barcode')
         ->join('transaksi', 'transaksi.no_faktur = detail_transaksi.no_faktur')
-        ->join('member', 'member.id_member = transaksi.id_member')
-        ->get();
+        ->join('member', 'member.id_member = transaksi.id_member');
 
-        // Mengembalikan hasil sebagai array
+        // Jika bulan diinputkan, tambahkan filter WHERE
+        if ($bulan) {
+            $queryLaporan->where('MONTH(transaksi.tanggal)', $bulan);
+        }
+
+        $queryLaporan = $queryLaporan->get();
+
+        // Hitung total jumlah dan total harga
+        $totals = $tbLaporan->select('
+            SUM(detail_transaksi.jumlah) AS totalJumlah,
+            SUM(detail_transaksi.subtotal) AS totalHarga
+        ')
+        ->join('transaksi', 'transaksi.no_faktur = detail_transaksi.no_faktur');
+
+        if ($bulan) {
+            $totals->where('MONTH(transaksi.tanggal)', $bulan);
+        }
+
+        $totals = $totals->get()->getRowArray();
 
         $data = [
             'title' => 'Laporan',
-            'laporan' => $queryLaporan->getResultArray()
+            'laporan' => $queryLaporan->getResultArray(),
+            'bulan' => $bulan, // Kirimkan bulan terpilih ke view
+            'totalJumlah' => $totals['totalJumlah'] ?? 0, // Total jumlah barang
+            'totalHarga' => $totals['totalHarga'] ?? 0 // Total harga
         ];
 
     
         // Render tampilan HTML sebagai PDF
         $dompdf = new Dompdf();
-        $html = view('pdf_template', $data); // View CI4 sebagai template PDF
+        $html = view('template_pdf', $data); // View CI4 sebagai template PDF
         $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
 
         // Kirim file PDF ke browser
-        $dompdf->stream('laporan-transaksi.pdf', ['Attachment' => false]);
+        $dompdf->stream('laporan-penjualan.pdf', ['Attachment' => false]);
     }
 }

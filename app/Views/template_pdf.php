@@ -43,16 +43,16 @@
 </head>
 <body>
     <div class="kop">
-        <h1>Nama Instansi</h1>
-        <p>Alamat: Jl. Contoh No. 123, Kota, Provinsi</p>
-        <p>Telepon: (021) 123456789 | Email: info@contoh.com</p>
+        <h1>Toko Sepatu</h1>
+        <p>Alamat: Jl. Raya Semaagung, Klungkung, Bali</p>
+        <p>Telepon: (021) 878622346 | Email: TokoSepatu@gmail.com</p>
         <div class="line"></div>
     </div>
 
-    <h2><?= $title ?></h2>
-    <table>
-    <thead>
-                <tr>
+    <h2></h2>
+    <table class="table  table-responsive ">
+            <thead>
+                <tr class="table-secondary">
                     <th scope="col" class="text-start">No Faktur</th>
                     <th scope="col" >Tanggal</th>
                     <th scope="col" >Nama Pelanggan</th>
@@ -77,12 +77,18 @@
                             <td><?='Rp  '.esc(number_format($row['totalharga'], 0, ',', '.')); ?></td>
                         </tr>
                     <?php endforeach; ?>
+                    <tr class="table-secondary">
+                         <td colspan="4" class="text-center"><b>Total :</b></td>
+                         <td><b><?=$totalJumlah; ?></b></td>
+                         <td colspan="2"></td>
+                         <td><b><?='Rp '.number_format($totalHarga, 0, ',', '.');  ?></b></td>
+                    </tr>
                 <?php else: ?>
                     <tr>
-                        <td colspan="4" class="text-center">Tidak ada data user</td>
+                        <td colspan="8" class="text-center">Tidak ada data untuk bulan ini</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
-    </table>
+        </table>
 </body>
 </html>

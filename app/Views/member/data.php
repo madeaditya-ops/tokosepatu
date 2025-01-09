@@ -1,9 +1,19 @@
 <?= $this->extend('template/main'); ?>
 <?= $this->section('content'); ?>
 
+<div class="pagetitle">
+      <h1><b>Members</b></h1>
+      <nav>
+        <ol class="breadcrumb mt-1">
+          <li class="breadcrumb-item"><a href="<?= base_url('admin/dashboard')?>"><i class="bi bi-house-door"></i></a></li>
+          <li class="breadcrumb-item">Members</li>
+          <li class="breadcrumb-item active">Data Members</li>
+        </ol>
+      </nav>
+    </div>
+
 <div class="card table-responsive">
     <div class="card-body">
-        <h5 class="card-title">Member</h5>
         <a href="<?= base_url('member/tambah'); ?>" class="btn btn-primary btn-md my-3"><i class="bi bi-plus"></i> Tambah Member</a>
         <table class="table table-bordered" id="datatable">
             <thead>

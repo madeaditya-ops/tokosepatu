@@ -1,9 +1,20 @@
 <?= $this->extend('template/main'); ?>
 <?= $this->section('content'); ?>
 
+
+<div class="pagetitle">
+      <h1><b>Data Produk</b></h1>
+      <nav>
+        <ol class="breadcrumb mt-1">
+          <li class="breadcrumb-item"><a href="<?= base_url('admin/dashboard')?>"><i class="bi bi-house-door"></i></a></li>
+          <li class="breadcrumb-item">Produk</li>
+          <li class="breadcrumb-item active">Data Peoduk</li>
+        </ol>
+      </nav>
+    </div>
+
 <div class="card table-responsive">
     <div class="card-body">
-        <h5 class="card-title">Data Produk</h5>
         <a href="<?= base_url('produk/data_produk/tambah'); ?>" class="btn btn-primary btn-md my-3"><i class="bi bi-plus"></i> Tambah Produk</a>
         <table class="table table-responsive table-bordered" id="datatable">
             <thead>

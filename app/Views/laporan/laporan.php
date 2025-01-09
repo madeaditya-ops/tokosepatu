@@ -13,10 +13,34 @@
             
          
 <div class="card table-responsive">
-    <div class="card-body pt-1">
-        <table class="table table-bordered table-responsive table-striped" id="datatable">
+ <div class="card-body pt-1">
+    <div class="card-title d-flex justify-content-between">
+        <a href="<?= base_url('cetakpdf?bulan=' . $bulan); ?>" class="btn btn-danger btn-sm">Cetak PDF</a>
+
+        <form method="get" action="" class="row g-3 align-items-center">
+        <div class="col-auto">
+            <label for="bulan" class="form-label fw-bold">Pilih Bulan:</label>
+        </div>
+        <div class="col-auto">
+            <select name="bulan" id="bulan" class="form-select">
+                <option value="">-- Semua Bulan --</option>
+                <?php for ($i = 1; $i <= 12; $i++): ?>
+                    <option value="<?= $i ?>" <?= ($bulan == $i) ? 'selected' : '' ?>>
+                        <?= date('F', mktime(0, 0, 0, $i, 1)); ?>
+                    </option>
+                <?php endfor; ?>
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+    </form>
+
+    </div>
+
+        <table class="table  table-responsive ">
             <thead>
-                <tr>
+                <tr class="table-secondary">
                     <th scope="col" class="text-start">No Faktur</th>
                     <th scope="col" >Tanggal</th>
                     <th scope="col" >Nama Pelanggan</th>
@@ -41,9 +65,15 @@
                             <td><?='Rp  '.esc(number_format($row['totalharga'], 0, ',', '.')); ?></td>
                         </tr>
                     <?php endforeach; ?>
+                    <tr class="table-secondary">
+                         <td colspan="4" class="text-center"><b>Total :</b></td>
+                         <td><b><?=$totalJumlah; ?></b></td>
+                         <td colspan="2"></td>
+                         <td><b><?='Rp '.number_format($totalHarga, 0, ',', '.');  ?></b></td>
+                    </tr>
                 <?php else: ?>
                     <tr>
-                        <td colspan="4" class="text-center">Tidak ada data user</td>
+                        <td colspan="8" class="text-center">Tidak ada data untuk bulan ini</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
